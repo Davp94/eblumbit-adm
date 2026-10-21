@@ -1,0 +1,39 @@
+<aside class="sidebar">
+    <!--Logo-->
+    <div class="sidebar-logo">
+        <div class="logo-icon">
+            <span></span>
+        </div>
+        <div class="logo-text">
+            <span class="logo-name">Eblumbit</span>
+            <span class="logo-sub">Admin Core</span>
+        </div>
+    </div>
+    <!--Navigation-->
+    <nav class="sidebar-nav">
+        @for (group of navGroups; track group.title) {
+            <div class="nav-group">
+                <span class="nav-group-title">{{group.title}}</span>
+                @for (item of group.items; track item.route) {
+                    <a 
+                    [routerLink]="item.route"
+                    routerLinkActive="active" 
+                    class="nav-item">
+                        <span class="material-icons nav-icon">{{item.icon}}</span>
+                        <span class="nav-label">{{item.label}}</span>
+                    </a>
+                    @if (item.badge) {
+                        <span class="nav-badge">{{item.badge}}</span>
+                    }
+                }
+            </div>
+        }
+    </nav>
+    <!--Footer-->
+    <div class="sidebar-footer">
+        <div class="sidebar-version">
+            <span>Version 2.x</span>
+            <span class="pro-badge">PRO</span>
+        </div>
+    </div>
+</aside>
