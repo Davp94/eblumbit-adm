@@ -1,39 +1,40 @@
-<aside class="sidebar">
+<aside class="flex h-full flex-col bg-surface">
     <!--Logo-->
-    <div class="sidebar-logo">
-        <div class="logo-icon">
-            <span></span>
+    <div class="flex items-center gap-3 px-5 py-5">
+        <div class="flex items-center justify-center rounded-xl bg-primary text-on-primary">
+            <mat-icon class="!h-8 !w-8 !text-3xl">layers</mat-icon>
         </div>
-        <div class="logo-text">
-            <span class="logo-name">Eblumbit</span>
-            <span class="logo-sub">Admin Core</span>
+        <div class="min-w-0 flex flex-col">
+            <span class="text-2xl font-semibold leading-tight">Eblumbit</span>
+            <span class="text-[10px] font-medium uppercase">Admin Core</span>
         </div>
     </div>
     <!--Navigation-->
-    <nav class="sidebar-nav">
+    <mat-nav-list class="flex-1 overflow-y-auto px-3 py-3">
         @for (group of navGroups; track group.title) {
-            <div class="nav-group">
-                <span class="nav-group-title">{{group.title}}</span>
-                @for (item of group.items; track item.route) {
-                    <a 
+            <div matSubheader>{{group.title}}</div>
+             @for (item of group.items; track item.route) {
+                <a 
+                    mat-list-item
+                    class="nav-item"
                     [routerLink]="item.route"
-                    routerLinkActive="active" 
-                    class="nav-item">
-                        <span class="material-icons nav-icon">{{item.icon}}</span>
-                        <span class="nav-label">{{item.label}}</span>
-                    </a>
-                    @if (item.badge) {
-                        <span class="nav-badge">{{item.badge}}</span>
+                    routerLinkActive="nav-active"
+                    [routerLinkActiveOptions]="{ exact:false }"
+                    (click)="navigate.emit()"
+                >
+                    <mat-icon matListItemIcon>{{item.icon}}</mat-icon>
+                    <span matListItemTitle>{{item.label}}</span>
+                     @if (item.badge) {
+                        <span matListItemMeta class="nav-badge nav-badge-neutral">{{item.badge}}</span>
                     }
-                }
-            </div>
+                </a>
+             }
         }
-    </nav>
+    </mat-nav-list>
+    <mat-divider />
     <!--Footer-->
-    <div class="sidebar-footer">
-        <div class="sidebar-version">
-            <span>Version 2.x</span>
-            <span class="pro-badge">PRO</span>
-        </div>
+    <div class="flex items-center justify-between gap-2 px-4 py-4">
+        <span class="text-xs">Version 1.0 Enterprise</span>
+        <span class="rounded-full bg-pink-100 px-2 py-0.5 text-[10px] font-semibold">PRO</span>
     </div>
 </aside>
