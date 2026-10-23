@@ -123,3 +123,7 @@
     --sidebar-bg: #3d3688;
     --sidebar-text: #8f8484;
 }
+.compact-field {
+    --mat-form-field-container-height: 40px;
+    --mat-form-field-container-vertical-padding: 10px
+}

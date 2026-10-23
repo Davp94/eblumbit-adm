@@ -1,3 +1,92 @@
-<button matIconButton (click)="toggleSidenav.emit()">
-    <mat-icon>menu</mat-icon>
-</button>
+<mat-toolbar>
+    <div class="flex w-full items-center gap-2 ">
+        <button matIconButton (click)="toggleSidenav.emit()">
+            <mat-icon>menu</mat-icon>
+        </button>
+
+        <nav class="flex items-center gap-1 text-sm">
+            <span>Eblumbit</span>
+            <mat-icon>chevron_right</mat-icon>
+            <span>Panel Principal</span>
+        </nav>
+        <div class="flex justify-center min-w-0 flex-1">
+            <mat-form-field appearance="outline" subscriptSizing="dynamic" class="compact-field w-full max-w-xl">
+                <mat-icon>search</mat-icon>
+                <input 
+                matInput
+                type="search"
+                placeholder="Buscar documento ...."
+                />
+            </mat-form-field>
+        </div>
+        <div class="ml-auto flex items-center gap-1">
+            <button
+                matIconButton
+                matTooltip="Notificaciones"
+                [matMenuTriggerFor]="notificationsMenu"
+                [matBadge]="unread()"
+                [matBadgeHidden]="unread() === 0"
+                matBadgeColor="warn"
+                matBadgeSize="small"
+            >
+                <mat-icon>notifications</mat-icon>
+            </button>
+            <button 
+                matIconButton
+                matTooltip="Preferencias"
+                (click)="openPreferencias()"
+                >
+                <mat-icon>tune</mat-icon>
+            </button>
+            <mat-divider [vertical]="true"></mat-divider>
+            <button
+            class="flex items-center gap-2.5 px-1 py-2 b-0 pointer "
+            [matMenuTriggerFor]="userMenu"
+            >
+                <span class="w-8 h-8 items-center justify-center text-primary">{{currentUser.initials}}</span>
+                <span class="block text-left leading-tight">
+                    <span class="text-sm font-medium text-on-surface">{{currentUser.name}}</span>
+                    <span class="text-xs text-on-surface-variant">{{currentUser.email}}</span>
+                </span>
+                <mat-icon class="text-on-surface-variant">keyboard_arrow_down</mat-icon>
+            </button>
+        </div>
+
+    </div>
+</mat-toolbar>
+<mat-menu #userMenu="matMenu" xPosition="before">
+    <div class="p-4">
+        <p class="text-sm font-medium text-on-surface">{{currentUser.name}}</p>
+        <p class="text-xs text-on-surface-variant">{{currentUser.email}}</p>
+        <mat-divider></mat-divider>
+        <button mat-menu-item>
+            <mat-icon>person</mat-icon>
+            <span>Mi Perfil</span>
+        </button>
+        <button mat-menu-item (click)="logout()">
+            <mat-icon>logout</mat-icon>
+            <span>Cerrar Sesión</span>
+        </button>
+    </div>
+</mat-menu>
+<mat-menu #notificationsMenu="matMenu" xPosition="before">
+    <div class="flex flex-col items-center justify-between gap-5 p-4">
+        <p class="text-sm font-medium text-on-surface">Notificaciones</p>
+        @if (unread() > 0) {
+            <button matButton="" (click)="markAllRead()">Marcar leidos</button>
+        }
+        <mat-divider />
+        @for (notification of notifications; track notification.title) {
+            <button mat-menu-item >
+                <mat-icon>{{notification.icon}}</mat-icon>
+                <span class="flex flex-col">
+                    <span class="text-sm font-medium">{{notification.title}}</span>
+                    <span class="text-xs text-on-surface-variant">{{notification.detail}}</span>
+                    <span class="text-xs" text-on-surface-variant>{{notification.time}}</span>
+                </span>
+            </button>
+        }
+    </div>
+</mat-menu>
+
+
