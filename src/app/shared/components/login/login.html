@@ -1,1 +1,53 @@
-<p>login works!</p>
+<div class="mx-auto flex min-h-screen w-full max-w-[560px] flex-col border-x border-slate-100 bg-white px-6 pb-8 pt-5 shadow-[0_0_24px_rgba(15,23,42,0.06)] sm:px-12">
+    <div class="mb-7 flex flex-col items-center text-center">
+        <div class="mb-4 grid size-[72px] place-items-center rounded-xl bg-[#f5f4f5] text-indigo-700 shadow-sm">
+            <mat-icon class="!h-9 !w-9 !text-[34px]">layers</mat-icon>
+        </div>
+        <div class="flex flex-col items-center gap-2">
+            <p class="rounded-full bg-[#f1eff0] px-3 py-1 text-[11px] font-semibold tracking-[0.14em] text-amber-800 uppercase">Eblumbit - Adm</p>
+            <p class="text-sm font-semibold tracking-wide text-slate-700">Admin Core</p>
+        </div>
+    </div>
+    <mat-card class="!rounded-none !border-0 !bg-transparent !shadow-none">
+        <mat-card-content class="!p-0">
+            <h1 class="mb-2 text-center font-serif text-4xl font-bold tracking-tight text-[#202124]">Bienvenido</h1>
+            <p class="mb-8 text-center text-lg leading-6 text-slate-600">Ingrese sus credenciales para administrar la plataforma</p>
+            <form class="flex flex-col gap-3" [formGroup]="form" (ngSubmit)="submit()">
+                <mat-form-field class="login-form-field w-full" appearance="outline">
+                    <mat-label>Username</mat-label>
+                    <mat-icon matPrefix class="text-slate-600">account_circle</mat-icon>
+                    <input matInput formControlName="username"/>
+                    @if (form.controls.username.hasError('email')) {
+                        <mat-error>Ingrese un correo válido</mat-error>
+                    }
+                    @if (form.controls.username.hasError('required')) {
+                        <mat-error>El username es requerido</mat-error>
+                    }
+                </mat-form-field>
+                <mat-form-field class="login-form-field w-full" appearance="outline">
+                    <mat-label>Password</mat-label>
+                    <mat-icon matPrefix class="text-slate-600">lock</mat-icon>
+                    <input matInput formControlName="password" [type]="hidePassword() ? 'password' : 'text'"/>
+                    <button matIconButton matSuffix (click)="hidePassword.set(!hidePassword())">
+                        <mat-icon>{{ hidePassword() ? 'visibility' : 'visibility_off'}}</mat-icon>
+                    </button>
+                    @if (form.controls.password.hasError('required')) {
+                        <mat-error>El password es requerido</mat-error>
+                    }
+                    @if (form.controls.password.hasError('minlength')) {
+                        <mat-error>El password debe tener mínimo 6 caracteres</mat-error>
+                    }
+                </mat-form-field>
+                <button type="submit" class="!mt-1 !h-[60px] !w-full !rounded-md !bg-gradient-to-r !from-indigo-800 !to-indigo-600 !text-base !font-semibold !tracking-wide !text-white" matButton>
+                    <mat-icon>login</mat-icon>
+                    Iniciar Sesion
+                </button>
+            </form>
+            <mat-divider class="!my-5" />
+            <div class="text-center">
+                <button class="text-sm font-medium text-indigo-700 hover:text-indigo-900">Olvidaste la contraseña??</button>
+            </div>
+        </mat-card-content>
+    </mat-card>
+    <h1 class="text-xl">{{ form.errors }}</h1>
+</div>
