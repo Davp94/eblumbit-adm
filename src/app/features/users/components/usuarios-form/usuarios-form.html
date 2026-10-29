@@ -1,1 +1,64 @@
-<p>usuarios-form works!</p>
+<div class="p-2 w-full">
+    <div class="flex items-center justify-center m-4 border-b">
+        <h2 class="text-xl font-bold text-gray-800">
+            {{isEditMode ? 'Editar Usuario' : 'Crear Usuario'}}
+        </h2>
+        <button mat-icon-button (click)="onCancel()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
+        <mat-form-field appearance="outline">
+            <mat-label>Nombres</mat-label>
+            <input matInput formControlName="nombres" />
+            @if (userForm.get('nombres')?.hasError('required')) {
+                <mat-error>El nombre es requerido</mat-error>
+            }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Apellidos</mat-label>
+            <input matInput formControlName="apellidos" />
+            @if (userForm.get('apellidos')?.hasError('required')) {
+                <mat-error>El apellido es requerido</mat-error>
+            }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Username</mat-label>
+            <input matInput formControlName="username" />
+            @if (userForm.get('username')?.hasError('required')) {
+                <mat-error>El username es requerido</mat-error>
+            }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Correo</mat-label>
+            <input matInput formControlName="email" />
+            @if (userForm.get('email')?.hasError('required')) {
+                <mat-error>El email es requerido</mat-error>
+            }
+            @if (userForm.get('email')?.hasError('email')) {
+                <mat-error>El email no tiene un formato correcto</mat-error>
+            }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Roles</mat-label>
+            <mat-select formControlName="rolIds" multiple>
+                @for (role of availableRoles; track role.id) {
+                    <mat-option [value]="role.id">{{role.name}}</mat-option>
+                }
+            </mat-select>
+            @if (userForm.get('rolids')?.hasError('required')) {
+                <mat-error>Seleccione al menos un rol</mat-error>
+            }
+        </mat-form-field>
+        <div class="flex justify-end gap-3 pt-4">
+            <button mat-button type="button" (click)="onCancel()">Cancelar</button>
+            <button mat-raised-button color="primary" type="submit" [disabled]="userForm.invalid">
+                {{isEditMode ? 'Guardar Cambios' : 'Crear Usuario'}}
+            </button>
+        </div>
+    </form>
+</div>

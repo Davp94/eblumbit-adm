@@ -1,1 +1,49 @@
-<p>usuarios-table works!</p>
+<div>
+    <div></div>
+    <div>
+        @if (isLoading()) {
+            <div class="flex justify-center items-center p-12">
+                <mat-spinner diameter="40"></mat-spinner>
+            </div>
+        } @else {
+            <div>
+                <table mat-table [dataSource]="users()" class="w-full">
+                    <ng-container matColumnDef="id">
+                        <th mat-header-cell *matHeaderCellDef class="font-bold">Id</th>
+                        <td mat-cell *matCellDef="let user">{{user.id}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="nombreCompleto">
+                        <th mat-header-cell *matHeaderCellDef class="font-bold">Nombre Completo</th>
+                        <td mat-cell *matCellDef="let user">
+                            <span class="font-medium text-gray-800">{{user.nombres}} {{user.apellidos}}</span>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="username">
+                        <th mat-header-cell *matHeaderCellDef class="font-bold">Username</th>
+                        <td mat-cell *matCellDef="let user">
+                            <span class="font-medium text-gray-800">{{user.username}}</span>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="email">
+                        <th mat-header-cell *matHeaderCellDef class="font-bold">Correo</th>
+                        <td mat-cell *matCellDef="let user">
+                            {{user.email}}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="rolIds">
+
+                    </ng-container>
+
+
+                    <ng-container matColumnDef="acciones">
+
+                    </ng-container>
+                </table>
+            </div>
+        }
+    </div>
+</div>
