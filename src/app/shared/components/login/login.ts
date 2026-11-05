@@ -29,7 +29,7 @@ export class Login {
   readonly hidePassword = signal(true);
   
   readonly form = this.fb.nonNullable.group({
-    username: ['', [Validators.email, Validators.required]],
+    username: ['', [Validators.required]],
     password: ['', [Validators.required, Validators.minLength(6)]]
   });
 
@@ -42,6 +42,7 @@ export class Login {
     this.authService.login(this.form.get('username')!.value, this.form.get('password')!.value).subscribe({
       next: () => {
         this.snackBar.open("Sesion iniciada correctamente", 'Cerrar', {duration: 3000})
+        this.router.navigate(['/usuarios']);
       },
       error: (err)=> {
         this.snackBar.open("Error al iniciar Sesion", 'Cerrar', {duration: 3000})

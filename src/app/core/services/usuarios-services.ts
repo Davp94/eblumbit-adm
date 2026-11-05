@@ -3,11 +3,12 @@ import { inject, Service } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UsuariosResponse } from '../models/usuarios/UsuariosResponse';
 import { UsuariosRequest } from '../models/usuarios/UsuariosRequest';
+import { environment } from '../../../environments/environment.development';
 
 @Service()
 export class UsuariosServices {
     private http = inject(HttpClient);
-    private apiUrl = 'http://localhost:8090/usuarios'
+    private apiUrl = environment.apiUrl + '/usuarios';
 
     getUsers(): Observable<UsuariosResponse[]> {
         return this.http.get<UsuariosResponse[]>(this.apiUrl);

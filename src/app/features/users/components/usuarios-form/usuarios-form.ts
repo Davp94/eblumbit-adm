@@ -44,10 +44,10 @@ export class UsuariosForm implements OnInit {
     this.isEditMode = !!this.data;
     this.userForm = this.fb.group({
       nombres: [this.data?.nombres || '', [Validators.required]],
-      apellidos: [this.data?.apellidos || [Validators.required]],
-      username: [this.data?.username || [Validators.required]],
-      email: [this.data?.email || [Validators.required, Validators.email]],
-      rolIds: [this.data?.rolIds || [Validators.required]]
+      apellidos: [this.data?.apellidos || '', [Validators.required]],
+      username: [this.data?.username || '', [Validators.required]],
+      email: [this.data?.email || '',[Validators.required, Validators.email]],
+      rolIds: [this.data?.rolIds || '',[Validators.required]]
     });
   }
 

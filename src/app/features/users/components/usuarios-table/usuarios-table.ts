@@ -45,6 +45,7 @@ export class UsuariosTable implements OnInit{
     this.isLoading.set(true);
     this.usuariosService.getUsers().subscribe({
       next: (data) => {
+        console.log("🚀 ~ UsuariosTable ~ loadUsers ~ data:", data)
         this.users.set(data);
         this.isLoading.set(false);
       },
@@ -86,6 +87,7 @@ export class UsuariosTable implements OnInit{
   }
 
   deleteUser(id: number): void {
+      console.log("🚀 ~ UsuariosTable ~ deleteUser ~ id:", id)
       if(confirm('Está seguro que desea eliminar este usuario?')) {
         this.usuariosService.deleteUsuario(id).subscribe({
           next: () => {
