@@ -50,6 +50,7 @@ export class Sidebar {
       title: 'Gestion',
       items: [
         { label: 'Usuarios', icon: 'group', route: '/usuarios'},
+        { label: 'Roles', icon: 'admin_panel_settings', route: '/roles'},
         { label: 'Sucursales', icon: 'home_work', route: '/sucursales'},
         { label: 'Clientes/proveedores', icon: 'handshake', route: '/clientes'},
       ]
