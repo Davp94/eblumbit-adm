@@ -27,6 +27,11 @@ export const routes: Routes = [
                     import('./features/roles/roles').then(m => m.Roles),
             },
             {
+                path: 'permisos',
+                loadComponent: () =>
+                    import('./features/permisos/permisos').then(m => m.Permisos),
+            },
+            {
                 path: 'sucursales',
                 component: Sucursales
             }

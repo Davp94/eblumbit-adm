@@ -1,0 +1,59 @@
+<div class="p-2 w-full">
+  <div class="flex items-center justify-between m-4 border-b">
+    <h2 class="text-xl font-bold text-gray-800">
+      {{ isEditMode ? 'Editar Permiso' : 'Crear Permiso' }}
+    </h2>
+    <button mat-icon-button type="button" (click)="onCancel()" aria-label="Cerrar">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <form [formGroup]="permisoForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
+    <mat-form-field appearance="outline">
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="nombre" />
+      @if (permisoForm.get('nombre')?.hasError('required')) {
+        <mat-error>El nombre es requerido</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Detalle</mat-label>
+      <input matInput formControlName="detalle" />
+      @if (permisoForm.get('detalle')?.hasError('required')) {
+        <mat-error>El detalle es requerido</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Descripción</mat-label>
+      <textarea matInput formControlName="descripcion" rows="3"></textarea>
+      @if (permisoForm.get('descripcion')?.hasError('required')) {
+        <mat-error>La descripción es requerida</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Subject</mat-label>
+      <input matInput formControlName="subject" />
+      @if (permisoForm.get('subject')?.hasError('required')) {
+        <mat-error>El subject es requerido</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Action</mat-label>
+      <input matInput formControlName="action" />
+      @if (permisoForm.get('action')?.hasError('required')) {
+        <mat-error>El action es requerido</mat-error>
+      }
+    </mat-form-field>
+
+    <div class="flex justify-end gap-3 pt-4">
+      <button mat-button type="button" (click)="onCancel()">Cancelar</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="permisoForm.invalid">
+        {{ isEditMode ? 'Guardar Cambios' : 'Crear Permiso' }}
+      </button>
+    </div>
+  </form>
+</div>
