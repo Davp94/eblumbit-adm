@@ -10,6 +10,7 @@ import { RolesRequest } from '../../../../core/models/roles/RolesRequest';
 import { RolesResponse } from '../../../../core/models/roles/RolesResponse';
 import { RolesServices } from '../../../../core/services/roles-services';
 import { RolesForm } from '../roles-form/roles-form';
+import { RolesPermissionsDialog } from '../roles-permissions-dialog/roles-permissions-dialog';
 
 @Component({
   imports: [
@@ -48,6 +49,13 @@ export class RolesTable implements OnInit {
         this.showNotification('Error al cargar los roles');
         this.isLoading.set(false);
       },
+    });
+  }
+
+  openPermisosModal(role: RolesResponse): void {
+    this.dialog.open(RolesPermissionsDialog, {
+      width: '500px',
+      data: {permisosIds: role.permisosIds},
     });
   }
 

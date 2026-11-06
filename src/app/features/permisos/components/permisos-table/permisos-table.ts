@@ -1,14 +1,15 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatTableModule } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { PermisosRequest } from '../../../../core/models/permisos/PermisosRequest';
 import { PermisosResponse } from '../../../../core/models/permisos/PermisosResponse';
 import { PermisosServices } from '../../../../core/services/permisos-services';
 import { PermisosForm } from '../permisos-form/permisos-form';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 
 @Component({
   imports: [
@@ -18,6 +19,7 @@ import { PermisosForm } from '../permisos-form/permisos-form';
     MatProgressSpinnerModule,
     MatSnackBarModule,
     MatTableModule,
+    MatPaginatorModule
   ],
   selector: 'app-permisos-table',
   templateUrl: './permisos-table.html',
@@ -28,9 +30,14 @@ export class PermisosTable implements OnInit {
   private snackBar = inject(MatSnackBar);
 
   permisos = signal<PermisosResponse[]>([]);
+  datasource = new MatTableDataSource<PermisosResponse>([]);
   isLoading = signal(true);
   displayedColumns = ['id', 'nombre', 'detalle', 'descripcion', 'subject', 'action', 'acciones'];
 
+  @ViewChild(MatPaginator)
+  set paginator(paginator: MatPaginator) {
+    this.datasource.paginator = paginator;
+  }
   ngOnInit(): void {
     this.loadPermisos();
   }
@@ -40,6 +47,7 @@ export class PermisosTable implements OnInit {
     this.permisosService.getPermisos().subscribe({
       next: (permisos) => {
         this.permisos.set(permisos);
+        this.datasource.data = permisos;
         this.isLoading.set(false);
       },
       error: () => {
