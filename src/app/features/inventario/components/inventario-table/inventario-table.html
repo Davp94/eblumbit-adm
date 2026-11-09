@@ -1,0 +1,27 @@
+<section>
+    <header>
+        <h1>Inventario</h1>
+        <p>Consulta y filtro de productos registrados</p>
+    </header>
+    <form [formGroup]="filters">
+        <mat-form-field>
+            <mat-label>Busqueda general</mat-label>
+            <input matInput formControlName="filterValue" placeholder="Busqueda general"/>
+        </mat-form-field>
+        <!-- other filters -->
+    </form>
+    <div>
+        <table>
+            <ng-container matColumnDef="nombre">
+                <th></th>
+                <td></td>
+            </ng-container>
+        </table>
+    </div>
+    <mat-paginator
+        (page)="onPageChange($event)"
+        [pageIndex]="pageIndex()"
+        [pageSizeOptions]="[10, 30, 50]"
+    >
+    </mat-paginator>
+</section>
