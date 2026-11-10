@@ -1,1 +1,11 @@
-<p>inventario works!</p>
+<div class="space-y-6">
+    <header class="flex flex-wrap items-center justify-between gap-4">
+        <button mat-flat-button type="button" (click)="openCreateProductoModal()">
+            <mat-icon>add</mat-icon>
+            Crear Producto
+        </button>
+    </header>
+    <div>
+        <app-inventario-table></app-inventario-table>
+    </div>
+</div>

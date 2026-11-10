@@ -10,14 +10,15 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSortModule, Sort } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { InventarioService } from '../../../../core/services/inventario-service';
-import { catchError, startWith, Subject, switchMap, tap } from 'rxjs';
+import { catchError, debounceTime, distinctUntilChanged, startWith, Subject, switchMap, tap } from 'rxjs';
 import { ProductoResponse } from '../../../../core/models/inventario/ProductoResponse';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ProductoPageRequest } from '../../../../core/models/inventario/ProductoPageRequest';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   imports: [
-    DecimalPipe, 
+    DecimalPipe,
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
@@ -26,8 +27,9 @@ import { ProductoPageRequest } from '../../../../core/models/inventario/Producto
     MatProgressSpinnerModule,
     MatSnackBarModule,
     MatTableModule,
-    ReactiveFormsModule
-  ],
+    ReactiveFormsModule,
+    MatIconModule
+],
   selector: 'app-inventario-table',
   styleUrl: './inventario-table.css',
   templateUrl: './inventario-table.html',
@@ -70,6 +72,18 @@ export class InventarioTable implements OnInit{
   private sortOrder: string | undefined;
 
   ngOnInit(): void {
+    this.filters.valueChanges
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged((previous, current) => JSON.stringify(previous) === JSON.stringify(current)),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe(()=> {
+        this.pageIndex.set(0);
+        this.reload.next();
+      });
+
+
     this.reload.pipe(
       startWith<void>(undefined),
       tap(()=>this.isLoading.set(true)),

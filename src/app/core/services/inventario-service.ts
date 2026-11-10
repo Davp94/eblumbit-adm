@@ -5,6 +5,8 @@ import { ProductoPageRequest } from '../models/inventario/ProductoPageRequest';
 import { Observable } from 'rxjs';
 import { PageableResponse } from '../../shared/models/PageableResponse';
 import { ProductoResponse } from '../models/inventario/ProductoResponse';
+import { ProductoRequest } from '../models/inventario/ProductoRequest';
+import { form } from '@angular/forms/signals';
 
 @Service()
 export class InventarioService {
@@ -23,6 +25,22 @@ export class InventarioService {
         }
 
         return this.http.get<PageableResponse<ProductoResponse>>(`${this.apiUrl}/paginacion`, {params});
+    }
+
+    createProducto(request: ProductoRequest): Observable<ProductoResponse> {
+        const formData = new FormData();
+        formData.append('nombre', request.nombre);
+        formData.append('codigoBarra', request.codigoBarra);
+        formData.append('unidadMedida', request.unidadMedida);
+        formData.append('marca', request.marca);
+        formData.append('descripcion', request.descripcion);
+        formData.append('precioVentaActual', String(request.precioVentaActual));
+        formData.append('stockMinimo', String(request.stockMinimo));
+        formData.append('estado', String(request.estado));
+        formData.append('categoriaId', String(request.categoriaId));
+        formData.append('imagen', request.imagen);
+
+        return this.http.post<ProductoResponse>(this.apiUrl, formData);
     }
 
 }
