@@ -1,1 +1,63 @@
-<p>productos-form works!</p>
+<h2 mat-dialog-title>Crear Producto</h2>
+
+<form [formGroup]="productoForm" (ngSubmit)="onSubmit()">
+    <mat-dialog-content class="flex flex-col gap-2">
+        <mat-form-field appearance="outline">
+            <mat-label>Nombre</mat-label>
+            <input matInput formControlName="nombre">
+            @if (productoForm.controls.nombre.hasError('required')
+            && productoForm.controls.nombre.touched) {
+            <mat-error>El nombre es requerido</mat-error>
+            }
+        </mat-form-field>
+        <div class="grid grid-cols-2">
+            <mat-form-field appearance="outline">
+                <mat-label>Codigo de barras</mat-label>
+                <input matInput formControlName="codigoBarra">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Unidad de medida</mat-label>
+                <input matInput formControlName="unidadMedida">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Marca</mat-label>
+                <input matInput formControlName="marca">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Categoria</mat-label>
+                <mat-select formControlName="categoriaId">
+                    @for (categoria of categorias(); track categoria.id) {
+                        <mat-option [value]="categoria.id">{{categoria.nombre}}</mat-option>
+                    }
+                </mat-select>
+                @if (productoForm.controls.categoriaId.hasError('required')) {
+                    <mat-error>Debe seleccionar una categoria</mat-error>
+                }
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Precio de Venta</mat-label>
+                <input matInput formControlName="precioVentaActual">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Stock minimo</mat-label>
+                <input matInput formControlName="stockMinimo">
+            </mat-form-field>
+        </div>
+        <mat-form-field appearance="outline">
+            <mat-label>Descripcion</mat-label>
+            <textarea matInput rows="3" formControlName="descripcion"></textarea>
+        </mat-form-field>
+        <div class="flex flex-col gap-2">
+            <label class="text-sm font-medium text-gray-700" for="producto-image">Imagen del producto</label>
+            <input id="producto-image" type="file" accept="image/*" (change)="onImageSelected($event)">
+            @if (selectedImage) {
+                <span class="text-sm text-gray-500">{{ selectedImage.name }}</span>
+            }
+        </div>
+        <mat-checkbox formControlName="estado">Producto activo</mat-checkbox>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-button type="button" (click)="onCancel()">Cancelar</button>
+        <button mat-flat-button type="submit" [disabled]="productoForm.invalid">Crear Producto</button>
+    </mat-dialog-actions>
+</form>
