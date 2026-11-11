@@ -1,0 +1,55 @@
+<div class="p-2 w-full">
+  <div class="flex items-center justify-between m-4 border-b">
+    <h2 class="text-xl font-bold text-gray-800">
+      {{ isEditMode ? 'Editar Almacén' : 'Crear Almacén' }}
+    </h2>
+    <button mat-icon-button type="button" (click)="onCancel()" aria-label="Cerrar">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <form [formGroup]="almacenForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
+    <mat-form-field appearance="outline">
+      <mat-label>Código</mat-label>
+      <input matInput formControlName="codigo" />
+      @if (almacenForm.controls.codigo.hasError('required') && almacenForm.controls.codigo.touched) {
+        <mat-error>El código es requerido</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="nombre" />
+      @if (almacenForm.controls.nombre.hasError('required') && almacenForm.controls.nombre.touched) {
+        <mat-error>El nombre es requerido</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Descripción</mat-label>
+      <textarea matInput formControlName="descripcion" rows="3"></textarea>
+      @if (almacenForm.controls.descripcion.hasError('required') && almacenForm.controls.descripcion.touched) {
+        <mat-error>La descripción es requerida</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Sucursal</mat-label>
+      <mat-select formControlName="sucursalId">
+        @for (sucursal of data.sucursales; track sucursal.id) {
+          <mat-option [value]="sucursal.id">{{ sucursal.nombre }}</mat-option>
+        }
+      </mat-select>
+      @if (almacenForm.controls.sucursalId.hasError('min')) {
+        <mat-error>Debe seleccionar una sucursal</mat-error>
+      }
+    </mat-form-field>
+
+    <div class="flex justify-end gap-3 pt-4">
+      <button mat-button type="button" (click)="onCancel()">Cancelar</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="almacenForm.invalid">
+        {{ isEditMode ? 'Guardar Cambios' : 'Crear Almacén' }}
+      </button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,53 @@
+<div class="p-2 w-full">
+  <div class="flex items-center justify-between m-4 border-b">
+    <h2 class="text-xl font-bold text-gray-800">
+      {{ isEditMode ? 'Editar Sucursal' : 'Crear Sucursal' }}
+    </h2>
+    <button mat-icon-button type="button" (click)="onCancel()" aria-label="Cerrar">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <form [formGroup]="sucursalForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
+    <mat-form-field appearance="outline">
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="nombre" />
+      @if (sucursalForm.controls.nombre.hasError('required') && sucursalForm.controls.nombre.touched) {
+        <mat-error>El nombre es requerido</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Dirección</mat-label>
+      <input matInput formControlName="direccion" />
+      @if (sucursalForm.controls.direccion.hasError('required') && sucursalForm.controls.direccion.touched) {
+        <mat-error>La dirección es requerida</mat-error>
+      }
+    </mat-form-field>
+
+    <div class="grid grid-cols-2 gap-3">
+      <mat-form-field appearance="outline">
+        <mat-label>Teléfono</mat-label>
+        <input matInput formControlName="telefono" />
+        @if (sucursalForm.controls.telefono.hasError('required') && sucursalForm.controls.telefono.touched) {
+          <mat-error>El teléfono es requerido</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Ciudad</mat-label>
+        <input matInput formControlName="ciudad" />
+        @if (sucursalForm.controls.ciudad.hasError('required') && sucursalForm.controls.ciudad.touched) {
+          <mat-error>La ciudad es requerida</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <div class="flex justify-end gap-3 pt-4">
+      <button mat-button type="button" (click)="onCancel()">Cancelar</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="sucursalForm.invalid">
+        {{ isEditMode ? 'Guardar Cambios' : 'Crear Sucursal' }}
+      </button>
+    </div>
+  </form>
+</div>

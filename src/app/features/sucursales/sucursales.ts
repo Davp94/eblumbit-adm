@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
+import { SucursalesTable } from './components/sucursales-table/sucursales-table';
 
 @Component({
-  imports: [],
+  imports: [SucursalesTable],
   selector: 'app-sucursales',
-  styleUrl: './sucursales.css',
   templateUrl: './sucursales.html',
 })
 export class Sucursales {}

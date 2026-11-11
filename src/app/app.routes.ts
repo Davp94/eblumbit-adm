@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 import { MainLayout } from './layout/main-layout/main-layout';
-import { Sucursales } from './features/sucursales/sucursales';
 import { Login } from './shared/components/login/login';
 import { authGuard } from './core/guards/auth-guard';
 
@@ -37,8 +36,14 @@ export const routes: Routes = [
                     import('./features/inventario/inventario').then(m => m.Inventario),
             },
             {
+                path: 'almacenes',
+                loadComponent: () =>
+                    import('./features/almacenes/almacenes').then(m => m.Almacenes),
+            },
+            {
                 path: 'sucursales',
-                component: Sucursales
+                loadComponent: () =>
+                    import('./features/sucursales/sucursales').then(m => m.Sucursales),
             }
         ]
     },
