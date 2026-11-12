@@ -43,4 +43,8 @@ export class InventarioService {
         return this.http.post<ProductoResponse>(this.apiUrl, formData);
     }
 
+    asociarProductoAlmacen(productoId: number, almacenId: number): Observable<void> {
+        return this.http.post<void>(`${this.apiUrl}/${productoId}/almacen/${almacenId}`, null);
+    }
+
 }

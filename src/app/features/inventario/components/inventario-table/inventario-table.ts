@@ -1,5 +1,5 @@
 import { DecimalPipe } from '@angular/common';
-import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, Input, OnChanges, OnInit, signal, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -34,7 +34,7 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrl: './inventario-table.css',
   templateUrl: './inventario-table.html',
 })
-export class InventarioTable implements OnInit{
+export class InventarioTable implements OnInit, OnChanges{
 
   private inventarioService = inject(InventarioService);
   private snackBar = inject(MatSnackBar);
@@ -46,6 +46,7 @@ export class InventarioTable implements OnInit{
   pageSize = signal<number>(10)
   pageIndex = signal<number>(0);
   isLoading = signal(true);
+  @Input() almacenId: number | null = null;
 
   displayedColumns = [
     'nombre',
@@ -65,11 +66,16 @@ export class InventarioTable implements OnInit{
     codigoBarra: new FormControl(''),
     marca: new FormControl(''),
     nombreCategoria: new FormControl(''),
-    almacenId: new FormControl(''),
   })
 
   private sortField: string | undefined;
   private sortOrder: string | undefined;
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if(changes['almacenId'] && !changes['almacenId'].firstChange) {
+      this.refreshProducts();
+    }
+  }
 
   ngOnInit(): void {
     this.filters.valueChanges
@@ -104,6 +110,11 @@ export class InventarioTable implements OnInit{
     })
   }
 
+  refreshProducts() : void {
+    this.pageIndex.set(0);
+    this.reload.next();
+  }
+
   onPageChange(event: PageEvent): void {
     this.pageIndex.set(event.pageIndex);
     this.pageSize.set(event.pageSize);
@@ -124,8 +135,7 @@ export class InventarioTable implements OnInit{
       descripcion: '',
       codigoBarra: '',
       marca: '',
-      nombreCategoria: '',
-      almacenId: ''
+      nombreCategoria: ''
     });
   }
 
@@ -142,7 +152,7 @@ export class InventarioTable implements OnInit{
       codigoBarra: values.codigoBarra?.trim() || undefined,
       marca: values.marca?.trim() || undefined,
       nombreCategoria: values.nombreCategoria?.trim() || undefined,
-      almacenId: Number(values.almacenId) || undefined,
+      almacenId: this.almacenId || undefined,
     }
   }
 }

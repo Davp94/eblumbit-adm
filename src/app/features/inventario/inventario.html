@@ -1,18 +1,39 @@
 <div class="space-y-6">
     <header class="flex flex-wrap items-center justify-between gap-4">
-        <button mat-flat-button type="button" (click)="openCreateProductoModal()">
-            <mat-icon>add</mat-icon>
-            Crear Producto
-        </button>
-        <button mat-flat-button type="button" (click)="openCreateProductoAlmacenModal()">
-            <mat-icon>add</mat-icon>
-            Asociar Producto - Almacen
-        </button>
         <div>
-            
+            <button mat-flat-button type="button" (click)="openCreateProductoModal()">
+                <mat-icon>add</mat-icon>
+                Crear Producto
+            </button>
+            <button mat-flat-button type="button" (click)="openCreateProductoAlmacenModal()">
+                <mat-icon>add</mat-icon>
+                Asociar Producto - Almacen
+            </button>
         </div>
+        <mat-form-field>
+            <mat-label>Sucursales</mat-label>
+            <mat-select [value]="selectedSucursalId()" (selectionChange)="onSucursalChange($event.value)"
+            [disabled]="isSucursalesLoading()">
+                <mat-option [value]="null">Seleccione una sucursal</mat-option>
+                @for (sucursal of sucursales(); track sucursal.id) {
+                    <mat-option [value]="sucursal.id">{{ sucursal.nombre }}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Almacenes</mat-label>
+            <mat-select [value]="selectedAlmacenId()" (selectionChange)="onAlmacenChange($event.value)"
+            [disabled]="isAlmacenesLoading() || selectedSucursalId() === null">
+                <mat-option [value]="null">Seleccione un almacen</mat-option>
+                @for (almacen of almacenes(); track almacen.id) {
+                    <mat-option [value]="almacen.id">{{ almacen.nombre }}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
     </header>
-    <div>
-        <app-inventario-table></app-inventario-table>
-    </div>
+    @if (selectedAlmacenId() !== null) {
+        <app-inventario-table [almacenId]="selectedAlmacenId()"></app-inventario-table>
+    } @else {
+        <p class="text-sm text-gray-700 font-medium">Seleccione una sucursal y un almacen para consultar sus productos</p>
+    }
 </div>
