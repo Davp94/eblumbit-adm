@@ -1,63 +1,127 @@
-<h2 mat-dialog-title>Crear Producto</h2>
+<h2 mat-dialog-title class="flex items-center gap-3 !pb-2 text-xl font-semibold text-slate-900">
+    <span class="flex size-10 items-center justify-center rounded-full bg-blue-50 text-blue-700">
+        <mat-icon aria-hidden="true">inventory_2</mat-icon>
+    </span>
+    <span>Crear producto</span>
+</h2>
 
 <form [formGroup]="productoForm" (ngSubmit)="onSubmit()">
-    <mat-dialog-content class="flex flex-col gap-2">
-        <mat-form-field appearance="outline">
-            <mat-label>Nombre</mat-label>
-            <input matInput formControlName="nombre">
-            @if (productoForm.controls.nombre.hasError('required')
-            && productoForm.controls.nombre.touched) {
-            <mat-error>El nombre es requerido</mat-error>
-            }
-        </mat-form-field>
-        <div class="grid grid-cols-2">
-            <mat-form-field appearance="outline">
+    <mat-dialog-content class="flex flex-col gap-5">
+        <section class="grid grid-cols-1 gap-x-4 gap-y-1 sm:grid-cols-2">
+            <mat-form-field appearance="outline" class="w-full sm:col-span-2">
+                <mat-label>Nombre</mat-label>
+                <input matInput formControlName="nombre" autocomplete="off">
+                @if (productoForm.controls.nombre.hasError('required')
+                && productoForm.controls.nombre.touched) {
+                    <mat-error>El nombre es requerido</mat-error>
+                }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="w-full">
                 <mat-label>Codigo de barras</mat-label>
                 <input matInput formControlName="codigoBarra">
             </mat-form-field>
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="outline" class="w-full">
                 <mat-label>Unidad de medida</mat-label>
                 <input matInput formControlName="unidadMedida">
+                @if (productoForm.controls.unidadMedida.hasError('required')
+                && productoForm.controls.unidadMedida.touched) {
+                    <mat-error>La unidad de medida es requerida</mat-error>
+                }
             </mat-form-field>
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="outline" class="w-full">
                 <mat-label>Marca</mat-label>
                 <input matInput formControlName="marca">
             </mat-form-field>
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="outline" class="w-full">
                 <mat-label>Categoria</mat-label>
                 <mat-select formControlName="categoriaId">
                     @for (categoria of categorias(); track categoria.id) {
                         <mat-option [value]="categoria.id">{{categoria.nombre}}</mat-option>
                     }
                 </mat-select>
-                @if (productoForm.controls.categoriaId.hasError('required')) {
+                @if (productoForm.controls.categoriaId.hasError('required')
+                && productoForm.controls.categoriaId.touched) {
                     <mat-error>Debe seleccionar una categoria</mat-error>
                 }
             </mat-form-field>
-            <mat-form-field appearance="outline">
-                <mat-label>Precio de Venta</mat-label>
-                <input matInput formControlName="precioVentaActual">
+            <mat-form-field appearance="outline" class="w-full">
+                <mat-label>Precio de venta</mat-label>
+                <input matInput type="number" min="0" step="0.01" formControlName="precioVentaActual">
+                @if (productoForm.controls.precioVentaActual.hasError('required')
+                && productoForm.controls.precioVentaActual.touched) {
+                    <mat-error>El precio de venta es requerido</mat-error>
+                } @else if (productoForm.controls.precioVentaActual.hasError('min')
+                && productoForm.controls.precioVentaActual.touched) {
+                    <mat-error>El precio no puede ser negativo</mat-error>
+                }
             </mat-form-field>
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="outline" class="w-full">
                 <mat-label>Stock minimo</mat-label>
-                <input matInput formControlName="stockMinimo">
+                <input matInput type="number" min="0" step="1" formControlName="stockMinimo">
+                @if (productoForm.controls.stockMinimo.hasError('required')
+                && productoForm.controls.stockMinimo.touched) {
+                    <mat-error>El stock minimo es requerido</mat-error>
+                } @else if (productoForm.controls.stockMinimo.hasError('min')
+                && productoForm.controls.stockMinimo.touched) {
+                    <mat-error>El stock minimo no puede ser negativo</mat-error>
+                }
             </mat-form-field>
-        </div>
-        <mat-form-field appearance="outline">
-            <mat-label>Descripcion</mat-label>
-            <textarea matInput rows="3" formControlName="descripcion"></textarea>
-        </mat-form-field>
-        <div class="flex flex-col gap-2">
-            <label class="text-sm font-medium text-gray-700" for="producto-image">Imagen del producto</label>
-            <input id="producto-image" type="file" accept="image/*" (change)="onImageSelected($event)">
+
+            <mat-form-field appearance="outline" class="w-full sm:col-span-2">
+                <mat-label>Descripcion</mat-label>
+                <textarea matInput rows="3" formControlName="descripcion"></textarea>
+            </mat-form-field>
+        </section>
+
+        <section class="flex flex-col gap-3" aria-labelledby="product-image-label">
+            <div>
+                <h3 id="product-image-label" class="text-sm font-semibold text-slate-800">Imagen del producto</h3>
+                <p class="mt-1 text-xs text-slate-500">Selecciona un archivo de imagen desde tu dispositivo.</p>
+            </div>
+
+            <label for="producto-image"
+                class="relative flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-slate-300 bg-slate-50 px-4 py-6 text-center transition hover:border-blue-400 hover:bg-blue-50 focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2">
+                <input #imageInput id="producto-image" type="file" accept="image/*"
+                    class="absolute inset-0 h-full w-full cursor-pointer opacity-0"
+                    aria-label="Seleccionar imagen del producto" (change)="onImageSelected($event)">
+                <mat-icon class="text-3xl text-blue-600" aria-hidden="true">cloud_upload</mat-icon>
+                <span class="text-sm font-medium text-slate-700">Haz clic para seleccionar una imagen</span>
+                <span class="text-xs text-slate-500">Se aceptan formatos de imagen compatibles con tu navegador.</span>
+            </label>
+
             @if (selectedImage) {
-                <span class="text-sm text-gray-500">{{ selectedImage.name }}</span>
+                <div class="flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-3">
+                    @if (imagePreviewUrl) {
+                        <img [src]="imagePreviewUrl" alt="Vista previa del producto"
+                            class="size-16 shrink-0 rounded-md border border-slate-200 object-cover">
+                    } @else {
+                        <span class="flex size-16 shrink-0 items-center justify-center rounded-md bg-slate-100 text-slate-500">
+                            <mat-icon aria-hidden="true">image</mat-icon>
+                        </span>
+                    }
+                    <div class="min-w-0 flex-1">
+                        <p class="truncate text-sm font-medium text-slate-800">{{selectedImage.name}}</p>
+                        <p class="mt-1 text-xs text-slate-500">{{formatFileSize(selectedImage.size)}}</p>
+                    </div>
+                    <button mat-icon-button type="button" aria-label="Quitar imagen"
+                        (click)="removeImage(imageInput)">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
             }
+
+        </section>
+
+        <div class="rounded-lg bg-slate-50 px-4 py-3">
+            <mat-checkbox formControlName="estado">Producto activo</mat-checkbox>
         </div>
-        <mat-checkbox formControlName="estado">Producto activo</mat-checkbox>
     </mat-dialog-content>
-    <mat-dialog-actions align="end">
+    <mat-dialog-actions align="end" class="gap-2 px-6 pb-5">
         <button mat-button type="button" (click)="onCancel()">Cancelar</button>
-        <button mat-flat-button type="submit" [disabled]="productoForm.invalid">Crear Producto</button>
+        <button mat-flat-button type="submit" class="!rounded-lg" [disabled]="productoForm.invalid">
+            <mat-icon>add</mat-icon>
+            Crear Producto
+        </button>
     </mat-dialog-actions>
 </form>

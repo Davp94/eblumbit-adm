@@ -51,38 +51,38 @@
                     </td>
                 </ng-container>
                 <ng-container matColumnDef="codigoBarra">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header="nombre">Codigo de barra</th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="codigoBarra">Codigo de barra</th>
                     <td mat-cell *matCellDef="let producto">
                         {{producto.codigoBarra }}
                     </td>
                 </ng-container>
                 <ng-container matColumnDef="unidadMedida">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header="nombre">Unidad de Medida</th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="unidadMedida">Unidad de Medida</th>
                     <td mat-cell *matCellDef="let producto">
                         {{producto.unidadMedida }}
                     </td>
                 </ng-container>
                 <ng-container matColumnDef="marca">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header="nombre">Marca</th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="marca">Marca</th>
                     <td mat-cell *matCellDef="let producto">
                         {{producto.marca }}
                     </td>
                 </ng-container>
                 <ng-container matColumnDef="categoriaNombre">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header="nombre">Categoria</th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="categoriaNombre">Categoria</th>
                     <td mat-cell *matCellDef="let producto">
                         {{producto.categoriaNombre }}
                     </td>
                 </ng-container>
                 <ng-container matColumnDef="precioVentaActual">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header="nombre">Precio de venta</th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="precioVentaActual">Precio de venta</th>
                     <td mat-cell *matCellDef="let producto">
                         {{producto.precioVentaActual | number:'1.2-2' }}
                     </td>
                 </ng-container>
 
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                <tr mat-row *matRowDef="let producto; colums displayedColumns"></tr>
+                <tr mat-row *matRowDef="let producto; columns: displayedColumns"></tr>
             </table>
         </div>
     }

@@ -7,7 +7,7 @@ import { CategoriaResponse } from '../models/categoria/CategoriaResponse';
 @Service()
 export class CategoriaService {
   private http = inject(HttpClient);
-  private apiUrl = environment.apiUrl + '/categoria';
+  private apiUrl = environment.apiUrl + '/categorias';
 
   getCategorias(): Observable<CategoriaResponse[]> {
     return this.http.get<CategoriaResponse[]>(this.apiUrl);

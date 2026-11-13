@@ -1,1 +1,67 @@
-<p>productos-almacen-form works!</p>
+<h2 mat-dialog-title class="flex items-center gap-3 !pb-2 text-xl font-semibold text-slate-900">
+    <span class="flex size-10 items-center justify-center rounded-full bg-blue-50 text-blue-700">
+        <mat-icon aria-hidden="true">inventory_2</mat-icon>
+    </span>
+    <span>Asociar producto a almacen</span>
+</h2>
+
+<form [formGroup]="productoForm" (ngSubmit)="onSubmit()">
+    <mat-dialog-content class="flex flex-col gap-5">
+        <section class="rounded-lg border border-slate-200 bg-slate-50 p-4" aria-label="Almacen seleccionado">
+            <p class="mb-1 text-xs font-semibold uppercase tracking-wide text-slate-500">Almacen seleccionado</p>
+            <p class="text-base font-semibold text-slate-900">{{data.almacen.nombre}}</p>
+        </section>
+
+        <section class="flex flex-col gap-3">
+            <div>
+                <h3 class="text-base font-semibold text-slate-900">Seleccione un producto</h3>
+                <p class="mt-1 text-sm text-slate-500">Busque el producto para asociar al almacen</p>
+            </div>
+            <mat-form-field appearance="outline" class="w-full">
+                <mat-label>Buscar producto</mat-label>
+                <mat-icon matPrefix aria-hidden="true">search</mat-icon>
+                <input matInput [formControl]="searchControl" placeholder="Nombre del producto" autocomplete="off">
+                @if (searchControl.value) {
+                    <button mat-icon-button matSuffix type="button" aria-label="Limpiar busqueda"
+                     (click)="searchControl.setValue('')">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                }
+            </mat-form-field>
+        </section>
+
+        <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Producto</mat-label>
+            <mat-select formControlName="productoId">
+                @for (producto of productos(); track producto.id) {
+                    <mat-option [value]="producto.id">
+                        <span>{{producto.nombre}}</span>
+                    </mat-option>
+                }
+            </mat-select>
+            @if (productoForm.controls.productoId.hasError('required') && productoForm.controls.productoId.touched) {
+                <mat-error>Seleccione un producto</mat-error>
+            }
+        </mat-form-field>
+
+        @if (isLoading()) {
+            <div class="flex items-center justify-center gap-3 rounded-lg bg-blue-50 px-4 py-3 text-sm text-blue-800" role="status">
+                <mat-spinner diameter="20"></mat-spinner>
+                <span>Buscando productos...</span>
+            </div>
+        } @else if (productos().length === 0) {
+            <div class="rounded-lg border border-dashed border-slate-300 px-4 py-5 text-center">
+                <mat-icon class="text-slate-400" aria-hidden="true">search_off</mat-icon>
+                <p class="mt-1 text-sm text-slate-600">No se encontraron productos. Pruebe con otro nombre</p>
+            </div>
+        }
+    </mat-dialog-content>
+    <mat-dialog-actions align="end" class="gap-2 px-6 pb-5">
+        <button mat-button type="button" (click)="onCancel()">Cancelar</button>
+        <button mat-flat-button type="submit" class="!rounded-lg"
+            [disabled]="productoForm.invalid || isLoading()">
+            <mat-icon>link</mat-icon>
+            Asociar producto
+        </button>
+    </mat-dialog-actions>
+</form>

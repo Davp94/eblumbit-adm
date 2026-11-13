@@ -10,7 +10,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSortModule, Sort } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { InventarioService } from '../../../../core/services/inventario-service';
-import { catchError, debounceTime, distinctUntilChanged, startWith, Subject, switchMap, tap } from 'rxjs';
+import { catchError, debounceTime, distinctUntilChanged, EMPTY, startWith, Subject, switchMap, tap } from 'rxjs';
 import { ProductoResponse } from '../../../../core/models/inventario/ProductoResponse';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ProductoPageRequest } from '../../../../core/models/inventario/ProductoPageRequest';
@@ -54,9 +54,7 @@ export class InventarioTable implements OnInit, OnChanges{
     'unidadMedida',
     'marca',
     'categoriaNombre',
-    'precioVentaActual',
-    'stockMinimo',
-    'estado'
+    'precioVentaActual'
   ]
 
   filters = new FormGroup({
@@ -95,9 +93,10 @@ export class InventarioTable implements OnInit, OnChanges{
       tap(()=>this.isLoading.set(true)),
       switchMap(() => {
         return this.inventarioService.getProductos(this.createRequest()).pipe(
-          catchError((err: any) => {
+          catchError(() => {
             this.isLoading.set(false);
             this.snackBar.open('Error al cargar los productos', 'Cerrar', {duration: 3000})
+            return EMPTY;
           })
         )
       }),

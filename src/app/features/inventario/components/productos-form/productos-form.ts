@@ -30,11 +30,13 @@ type ProductoFormControls = {
   styleUrl: './productos-form.css',
   templateUrl: './productos-form.html',
 })
-export class ProductosForm implements OnInit {
+export class ProductosForm implements OnInit, OnDestroy {
+    
     private categoriaService = inject(CategoriaService);
     private dialogRef = inject(MatDialogRef<ProductosForm, ProductoRequest>)
     selectedImage: File | null = null;
     categorias = signal<CategoriaResponse[] | null>(null);
+    imagePreviewUrl: string | null = null;
 
     productoForm = new FormGroup<ProductoFormControls>({
       nombre: new FormControl('', {nonNullable: true, validators: [Validators.required]}),
@@ -56,7 +58,25 @@ export class ProductosForm implements OnInit {
 
     onImageSelected(event: Event): void {
       const input = event.currentTarget as HTMLInputElement;
-      this.selectedImage = input.files?.[0] || null;
+      const image = input.files?.[0] || null;
+      if(!image){
+        return
+      }
+      this.clearImagePreview();
+      this.selectedImage = image;
+      this.imagePreviewUrl = URL.createObjectURL(image);
+    }
+
+    removeImage(input: HTMLInputElement): void {
+      this.clearImagePreview();
+      this.selectedImage = null;
+      input.value = '';
+    }
+
+    formatFileSize(size: number): string {
+      return size < 1024*1024
+      ?`${size/1024} KB`
+      :`${(size/(1024*1024)).toFixed(1)} MB`
     }
 
     onSubmit(): void {
@@ -73,5 +93,16 @@ export class ProductosForm implements OnInit {
 
     onCancel(): void {
       this.dialogRef.close();
+    }
+
+    ngOnDestroy(): void {
+      this.clearImagePreview();
+    }
+
+    private clearImagePreview(): void {
+      if(this.imagePreviewUrl) {
+        URL.revokeObjectURL(this.imagePreviewUrl);
+        this.imagePreviewUrl = null;
+      }
     }
 }
