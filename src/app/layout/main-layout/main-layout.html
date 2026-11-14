@@ -2,10 +2,10 @@
     <mat-sidenav
         #drawer
         class="sidenav"
-        mode="side" [(opened)]="opened" (opened)="trackEvent('open!')"
-                (closed)="trackEvent('close!')"
+        mode="side"
+        [(opened)]="opened"
     >
-    <app-sidebar (navigate)="drawer.close()"></app-sidebar>
+    <app-sidebar></app-sidebar>
     </mat-sidenav>
     <mat-sidenav-content class="bg-surface-container-low">
         <app-topbar (toggleSidenav)="drawer.toggle()"></app-topbar>

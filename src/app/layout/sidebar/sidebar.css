@@ -1,39 +1,73 @@
-.sidebar {
-    width: var(--sidebar-width);
-    min-height: 100vh;
-    background: var(--sidebar-bg);
-    border-right: 1px solid;
-    display: flex;
-    flex-direction: column;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 100;
-    overflow-y: auto;
+:host {
+    display: block;
+    height: 100%;
+    color: var(--mat-sys-on-surface);
 }
 
-.sidebar-logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 18px;
-    border-bottom: 1px solid;
+aside {
+    min-height: 100%;
+    background: var(--mat-sys-surface);
 }
 
-.sidebar-nav {
-    flex: 1;
-    padding: 12px 0;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
+mat-nav-list {
+    scrollbar-color: var(--mat-sys-outline-variant) transparent;
+    scrollbar-width: thin;
 }
 
-.nav-group {
-    padding: 0 0 8px;
+mat-nav-list [matSubheader] {
+    min-height: 40px;
+    padding-inline: 12px;
+    color: var(--mat-sys-on-surface-variant);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
 }
 
 .nav-item {
-    display: flex;
-    align-items: center;
-    
+    margin-block: 3px;
+    border-radius: 12px;
+    color: var(--mat-sys-on-surface-variant);
+    transition:
+        background-color 180ms ease,
+        color 180ms ease,
+        transform 180ms ease;
+}
+
+.nav-item:hover {
+    background-color: var(--mat-sys-surface-container-high);
+    color: var(--mat-sys-on-surface);
+}
+
+.nav-item:focus-visible {
+    outline: 2px solid var(--mat-sys-primary);
+    outline-offset: 2px;
+}
+
+.nav-item.nav-active {
+    background-color: var(--mat-sys-primary-container);
+    color: var(--mat-sys-on-primary-container);
+    font-weight: 600;
+}
+
+.nav-item.nav-active mat-icon {
+    color: var(--mat-sys-primary);
+}
+
+.nav-badge {
+    border-radius: 999px;
+    padding: 2px 8px;
+    font-size: 0.65rem;
+    font-weight: 600;
+}
+
+.nav-badge-neutral {
+    background: var(--mat-sys-surface-container-high);
+    color: var(--mat-sys-on-surface-variant);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .nav-item {
+        transition: none;
+    }
 }

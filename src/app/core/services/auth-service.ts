@@ -52,6 +52,7 @@ export class AuthService {
             }),
             shareReplay({bufferSize: 1, refCount: false})
         );
+        this.refreshRequest = request;
         return request;
     }
 

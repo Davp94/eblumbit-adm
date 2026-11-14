@@ -20,7 +20,6 @@
                     [routerLink]="item.route"
                     routerLinkActive="nav-active"
                     [routerLinkActiveOptions]="{ exact:false }"
-                    (click)="navigate.emit()"
                 >
                     <mat-icon matListItemIcon>{{item.icon}}</mat-icon>
                     <span matListItemTitle>{{item.label}}</span>

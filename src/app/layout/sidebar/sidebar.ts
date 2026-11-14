@@ -1,4 +1,4 @@
-import { Component, output } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { RouterLink, RouterLinkActive, RouterLinkWithHref } from '@angular/router';
@@ -30,8 +30,6 @@ interface NavGroup {
   templateUrl: './sidebar.html',
 })
 export class Sidebar {
-  readonly navigate = output<void>();
-
   navGroups: NavGroup[] = [
     {
       title: 'Plataforma',
