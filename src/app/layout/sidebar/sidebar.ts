@@ -52,7 +52,7 @@ export class Sidebar {
         { label: 'Permisos', icon: 'vpn_key', route: '/permisos'},
         { label: 'Sucursales', icon: 'home_work', route: '/sucursales'},
         { label: 'Almacenes', icon: 'warehouse', route: '/almacenes'},
-        { label: 'Clientes/proveedores', icon: 'handshake', route: '/clientes'},
+        { label: 'Proveedores', icon: 'handshake', route: '/proveedores'},
       ]
     }
   ]

@@ -44,6 +44,11 @@ export const routes: Routes = [
                 path: 'sucursales',
                 loadComponent: () =>
                     import('./features/sucursales/sucursales').then(m => m.Sucursales),
+            },
+            {
+                path: 'proveedores',
+                loadComponent: () =>
+                    import('./features/proveedores/proveedores').then(m => m.Proveedores),
             }
         ]
     },

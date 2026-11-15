@@ -1,0 +1,68 @@
+<div class="p-2 w-full">
+  <div class="flex items-center justify-between m-4 border-b">
+    <h2 class="text-xl font-bold text-gray-800">
+      {{ isEditMode ? 'Editar Proveedor' : 'Crear Proveedor' }}
+    </h2>
+    <button mat-icon-button type="button" (click)="onCancel()" aria-label="Cerrar">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <form [formGroup]="proveedorForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
+    <mat-form-field appearance="outline">
+      <mat-label>Razón social</mat-label>
+      <input matInput formControlName="razonSocial" />
+      @if (proveedorForm.controls.razonSocial.hasError('required') && proveedorForm.controls.razonSocial.touched) {
+        <mat-error>La razón social es requerida</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Número de identificación</mat-label>
+      <input matInput formControlName="nroIdentificacion" />
+      @if (proveedorForm.controls.nroIdentificacion.hasError('required') && proveedorForm.controls.nroIdentificacion.touched) {
+        <mat-error>El número de identificación es requerido</mat-error>
+      }
+    </mat-form-field>
+
+    <div class="grid grid-cols-2 gap-3">
+      <mat-form-field appearance="outline">
+        <mat-label>Contacto</mat-label>
+        <input matInput formControlName="contacto" />
+        @if (proveedorForm.controls.contacto.hasError('required') && proveedorForm.controls.contacto.touched) {
+          <mat-error>El contacto es requerido</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Teléfono</mat-label>
+        <input matInput formControlName="telefono" />
+        @if (proveedorForm.controls.telefono.hasError('required') && proveedorForm.controls.telefono.touched) {
+          <mat-error>El teléfono es requerido</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Correo electrónico</mat-label>
+      <input matInput type="email" formControlName="correo" />
+      @if (proveedorForm.controls.correo.hasError('required') && proveedorForm.controls.correo.touched) {
+        <mat-error>El correo electrónico es requerido</mat-error>
+      } @else if (proveedorForm.controls.correo.hasError('email') && proveedorForm.controls.correo.touched) {
+        <mat-error>Ingrese un correo electrónico válido</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Observaciones</mat-label>
+      <textarea matInput formControlName="observaciones" rows="3"></textarea>
+    </mat-form-field>
+
+    <div class="flex justify-end gap-3 pt-4">
+      <button mat-button type="button" (click)="onCancel()">Cancelar</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="proveedorForm.invalid">
+        {{ isEditMode ? 'Guardar Cambios' : 'Crear Proveedor' }}
+      </button>
+    </div>
+  </form>
+</div>
