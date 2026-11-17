@@ -1,2 +1,11 @@
-<p>compras-form-page works!</p>
-<app-compras-form [almacenId]="almacenId"></app-compras-form>
+<div>
+    <header>
+        <div>
+            <h3>Nueva compra</h3>
+            <p>Almacen #{{almacenId}}</p>
+        </div>
+    </header>
+    <app-compras-form [almacenId]="almacenId"
+    [isSubmitting]="isSubmitting()"
+    (submitted)="onSubmitted($event)"></app-compras-form>
+</div>

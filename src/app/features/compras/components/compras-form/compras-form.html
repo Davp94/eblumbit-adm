@@ -1,1 +1,81 @@
-<p>compras-form works!</p>
+<form [formGroup]="comprasForm" (ngSubmit)="submit()">
+    <section>
+        <mat-form-field appearance="outline">
+            <mat-label>Proveedor</mat-label>
+            <input matInput [formControl]="proveedoresSearch" [matAutocomplete]="proveedorAutocomplete"
+            placeholder="Buscar proveedor" autocomplete="off">
+            <mat-autocomplete #proveedorAutocomplete (optionSelected)="selectProveedor($event)">
+                @for (proveedor of proveedores(); track proveedor.id) {
+                    <mat-option [value]="proveedor.id">{{proveedor.razonSocial}}</mat-option>
+                }
+            </mat-autocomplete>
+            @if (comprasForm.controls.proveedorId.hasError('required') && comprasForm.controls.proveedorId.touched) {
+                <mat-error>Seleccione un proveedor de la lista</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Descuento total</mat-label>
+            <input matInput type="number" min="0" formControlName="descuentoTotal">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Detalle</mat-label>
+            <textarea matInput rows="2" formControlName="detalle"></textarea>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Observaciones</mat-label>
+            <textarea matInput rows="2" formControlName="observaciones"></textarea>
+        </mat-form-field>
+    </section>
+
+    <section>
+        <header>
+            <div>Detalle de compra</div>
+            <button mat-flat-button type="button" (click)="addDetalle()">
+                <mat-icon>add</mat-icon>
+                Agregar producto</button>
+        </header>
+        <div formArrayName="detalleCompra">
+            @for (detalle of detalleCompra.controls; track detalle; let i  = $index) {
+                <div [formGroupName]="i">
+                    <div>
+                        <h3>producto {{i+1}}</h3>
+                        <button mat-icon-button type="button" [disabled]="detalleCompra.length<=1"
+                            (click)="removeDetalle(i)"
+                        ><mat-icon>delete</mat-icon></button>
+                    </div>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Buscar producto en almacen</mat-label>
+                        <input matInput [formControl]="detalleRows()[i].searchControl"
+                        [matAutocomplete]="proveedorAutocomplete" autocomplete="off">
+                        <mat-autocomplete #productoAutocomplete="matAutocomplete"
+                        (optionSelected)="selectProducto(i, $event)">
+                            @for (producto of detalleRows()[i].productos(); track producto.id) {
+                                <mat-option [value]="producto.id">{{producto.nombre}}</mat-option>
+                            }
+                        </mat-autocomplete>
+                        @if (detalle.controls.productoId.hasError('required') && detalle.controls.productoId.touched) {
+                            <mat-error>Seleccione un producto de la lista</mat-error>
+                        }
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Cantidad</mat-label>
+                        <input matInput type="number" formControlName="cantidad"> 
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Precio Unitario Compra</mat-label>
+                        <input matInput type="number" formControlName="precioUnitarioCompra"> 
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>observaciones</mat-label>
+                        <input matInput formControlName="cantidad"> 
+                    </mat-form-field>
+                </div>
+            }
+        </div>
+    </section>
+    <div>
+        <button mat-flat-button type="submit" [disabled]="isSubmitting">
+            <mat-icon>check</mat-icon> Registrar compra
+        </button>
+    </div>
+</form>

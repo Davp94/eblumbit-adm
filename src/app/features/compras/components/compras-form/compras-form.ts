@@ -1,6 +1,6 @@
-import { Component, DestroyRef, inject, Input, OnInit, signal, WritableSignal } from '@angular/core';
+import { Component, DestroyRef, EventEmitter, inject, Input, OnInit, Output, signal, WritableSignal } from '@angular/core';
 import { FormArray, FormControl, FormControlName, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -14,6 +14,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { SessionStorage } from '../../../../core/services/session-storage';
 import { ProveedorResponse } from '../../../../core/models/proveedores/ProveedorResponse';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ComprasRequest } from '../../../../core/models/compras/ComprasRequest';
+import { DetalleCompraRequest } from '../../../../core/models/compras/DetalleCompraRequest';
 
 type DetalleCompraForm = FormGroup<{
   cantidad: FormControl<number | null>;
@@ -53,6 +55,8 @@ export class ComprasForm implements OnInit{
   private snackBar = inject(MatSnackBar);
 
   @Input({required: true}) almacenId!: number;
+  @Input() isSubmitting = false;
+  @Output() submitted = new EventEmitter<ComprasRequest>();
 
   proveedores = signal<ProveedorResponse[]>([]);
   isSearchingProveedores = signal(false);
@@ -109,6 +113,64 @@ export class ComprasForm implements OnInit{
     row.destroy$.complete();
     this.detalleCompra.removeAt(index);
     this.detalleRows.update((rows) => rows.filter((_,rowIndex)=> index !== rowIndex))
+  }
+
+  selectProveedor(event: MatAutocompleteSelectedEvent): void {
+    const proveedorId = Number(event.option.value);
+    const proveedor = this.proveedores().find((item) => item.id === proveedorId);
+    if(!proveedor){
+      return;
+    }
+    this.comprasForm.controls.proveedorId.setValue(proveedor.id);
+    this.proveedoresSearch.setValue(proveedor.razonSocial, {emitEvent: false})
+  }
+
+  selectProducto(rowIndex: number, event: MatAutocompleteSelectedEvent): void {
+    const row = this.detalleRows()[rowIndex];
+    const productoId = Number(event.option.value);
+    const producto = row.productos().find((item)=>item.id === productoId);
+    if(!producto){
+      return;
+    }
+    row.form.controls.productoId.setValue(producto.id);
+    row.searchControl.setValue(producto.nombre, {emitEvent: false});
+  }
+
+  submit(): void {
+    if(this.isSubmitting){
+      return;
+    }
+    this.comprasForm.markAllAsTouched();
+    const compra = this.comprasForm.getRawValue();
+    const detalles: DetalleCompraRequest[] = [];
+    if (this.comprasForm.invalid){
+      return;
+    } 
+    if(compra.proveedorId === null || compra.usuarioId === null){
+      return;
+    }
+   
+    for (const detalle of compra.detalleCompra) {
+      if(
+        detalle.cantidad === null || detalle.precioUnitarioCompra === null || detalle.productoId === null
+      )
+      return;
+      detalles.push({
+        cantidad: detalle.cantidad,
+        precioUnitarioCompra: detalle.precioUnitarioCompra,
+        observaciones: detalle.observaciones,
+        productoId: detalle.productoId,
+        almacenId: detalle.almacenId
+      })
+    }
+    this.submitted.emit({
+      usuarioId: compra.usuarioId,
+      proveedorId: compra.proveedorId,
+      descuentoTotal: compra.descuentoTotal ?? undefined,
+      detalle: compra.detalle,
+      observaciones: compra.observaciones,
+      detalleCompra: detalles
+    });
   }
 
   private createDetalleForm(): DetalleCompraForm {

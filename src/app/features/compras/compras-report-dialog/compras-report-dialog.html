@@ -1,0 +1,10 @@
+<h2>Reporte de compra #{{data.compraId}}</h2>
+<mat-dialog-content>
+    <iframe [src]="reportUrl" title="Reporte PDF de la compra"></iframe>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <a mat-flat-button [href]="reportObjectUrl" [download]="fileName">
+        Descargar Reporte
+    </a>
+    <button mat-button (click)="close()">Cerrar</button>
+</mat-dialog-actions>

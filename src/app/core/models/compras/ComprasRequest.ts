@@ -4,7 +4,7 @@ export interface ComprasRequest {
     proveedorId: number;
     usuarioId: number;
     detalle: string;
-    descuentoTotal: number;
+    descuentoTotal?: number;
     observaciones: string;
     detalleCompra: DetalleCompraRequest[];
 }
