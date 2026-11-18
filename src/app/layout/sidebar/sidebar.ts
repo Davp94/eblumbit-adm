@@ -38,10 +38,10 @@ export class Sidebar {
         { label: 'Inventario', icon: 'inventory_2', route: '/inventario'},
         { label: 'Transacciones', icon: 'receipt_long', route: '/transacciones', badge: 'Activo',
           children: [
-            {label: 'Compras', route: '/compras', badge: 'Ingreso', tone: 'income'},
             {label: 'Ventas', route: '/ventas', badge: 'Salida', tone: 'expense'}
           ]
         },
+        {label: 'Compras', icon: 'receipt_long', route: '/compras', badge: 'Ingreso'},
       ]
     }, 
     {
