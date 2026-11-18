@@ -1,81 +1,95 @@
-<form [formGroup]="comprasForm" (ngSubmit)="submit()">
-    <section>
-        <mat-form-field appearance="outline">
-            <mat-label>Proveedor</mat-label>
-            <input matInput [formControl]="proveedoresSearch" [matAutocomplete]="proveedorAutocomplete"
-            placeholder="Buscar proveedor" autocomplete="off">
-            <mat-autocomplete #proveedorAutocomplete (optionSelected)="selectProveedor($event)">
-                @for (proveedor of proveedores(); track proveedor.id) {
-                    <mat-option [value]="proveedor.id">{{proveedor.razonSocial}}</mat-option>
+<form [formGroup]="comprasForm" (ngSubmit)="submit()" class="mx-auto max-w-5xl space-y-6 p-4 sm:p-6">
+    <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+        <header class="mb-5">
+            <h2 class="text-lg font-semibold text-slate-900">Datos de la compra</h2>
+            <p class="mt-1 text-sm text-slate-500">Selecciona un proveedor y completa la información de la compra.</p>
+        </header>
+        <div class="grid grid-cols-1 gap-x-5 md:grid-cols-2">
+            <mat-form-field appearance="outline" class="w-full">
+                <mat-label>Proveedor</mat-label>
+                <input matInput [formControl]="proveedoresSearch" [matAutocomplete]="proveedorAutocomplete"
+                placeholder="Buscar proveedor" autocomplete="off">
+                <mat-autocomplete #proveedorAutocomplete (optionSelected)="selectProveedor($event)">
+                    @for (proveedor of proveedores(); track proveedor.id) {
+                        <mat-option [value]="proveedor.id">{{proveedor.razonSocial}}</mat-option>
+                    }
+                </mat-autocomplete>
+                @if (comprasForm.controls.proveedorId.hasError('required') && comprasForm.controls.proveedorId.touched) {
+                    <mat-error>Seleccione un proveedor de la lista</mat-error>
                 }
-            </mat-autocomplete>
-            @if (comprasForm.controls.proveedorId.hasError('required') && comprasForm.controls.proveedorId.touched) {
-                <mat-error>Seleccione un proveedor de la lista</mat-error>
-            }
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-            <mat-label>Descuento total</mat-label>
-            <input matInput type="number" min="0" formControlName="descuentoTotal">
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-            <mat-label>Detalle</mat-label>
-            <textarea matInput rows="2" formControlName="detalle"></textarea>
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-            <mat-label>Observaciones</mat-label>
-            <textarea matInput rows="2" formControlName="observaciones"></textarea>
-        </mat-form-field>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="w-full">
+                <mat-label>Descuento total</mat-label>
+                <input matInput type="number" min="0" formControlName="descuentoTotal">
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="w-full">
+                <mat-label>Detalle</mat-label>
+                <textarea matInput rows="2" formControlName="detalle"></textarea>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="w-full">
+                <mat-label>Observaciones</mat-label>
+                <textarea matInput rows="2" formControlName="observaciones"></textarea>
+            </mat-form-field>
+        </div>
     </section>
 
-    <section>
-        <header>
-            <div>Detalle de compra</div>
-            <button mat-flat-button type="button" (click)="addDetalle()">
+    <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+        <header class="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+                <h2 class="text-lg font-semibold text-slate-900">Detalle de compra</h2>
+                <p class="mt-1 text-sm text-slate-500">Agrega los productos que forman parte de esta compra.</p>
+            </div>
+            <button mat-stroked-button type="button" (click)="addDetalle()" class="shrink-0">
                 <mat-icon>add</mat-icon>
-                Agregar producto</button>
+                Agregar producto
+            </button>
         </header>
-        <div formArrayName="detalleCompra">
+        <div formArrayName="detalleCompra" class="space-y-4">
             @for (detalle of detalleCompra.controls; track detalle; let i  = $index) {
-                <div [formGroupName]="i">
-                    <div>
-                        <h3>producto {{i+1}}</h3>
+                <div [formGroupName]="i" class="rounded-xl border border-slate-200 bg-slate-50/60 p-4 sm:p-5">
+                    <div class="mb-4 flex items-center justify-between">
+                        <h3 class="text-sm font-semibold text-slate-800">Producto {{i+1}}</h3>
                         <button mat-icon-button type="button" [disabled]="detalleCompra.length<=1"
-                            (click)="removeDetalle(i)"
+                            (click)="removeDetalle(i)" [attr.aria-label]="'Eliminar producto ' + (i + 1)"
+                            class="text-slate-500"
                         ><mat-icon>delete</mat-icon></button>
                     </div>
-                    <mat-form-field appearance="outline">
-                        <mat-label>Buscar producto en almacen</mat-label>
-                        <input matInput [formControl]="detalleRows()[i].searchControl"
-                        [matAutocomplete]="proveedorAutocomplete" autocomplete="off">
-                        <mat-autocomplete #productoAutocomplete="matAutocomplete"
-                        (optionSelected)="selectProducto(i, $event)">
-                            @for (producto of detalleRows()[i].productos(); track producto.id) {
-                                <mat-option [value]="producto.id">{{producto.nombre}}</mat-option>
+                    <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-2 lg:grid-cols-4">
+                        <mat-form-field appearance="outline" class="w-full sm:col-span-2">
+                            <mat-label>Buscar producto en almacén</mat-label>
+                            <input matInput [formControl]="detalleRows()[i].searchControl"
+                            [matAutocomplete]="productoAutocomplete" autocomplete="off">
+                            <mat-autocomplete #productoAutocomplete="matAutocomplete"
+                            (optionSelected)="selectProducto(i, $event)">
+                                @for (producto of detalleRows()[i].productos(); track producto.id) {
+                                    <mat-option [value]="producto.id">{{producto.nombre}}</mat-option>
+                                }
+                            </mat-autocomplete>
+                            @if (detalle.controls.productoId.hasError('required') && detalle.controls.productoId.touched) {
+                                <mat-error>Seleccione un producto de la lista</mat-error>
                             }
-                        </mat-autocomplete>
-                        @if (detalle.controls.productoId.hasError('required') && detalle.controls.productoId.touched) {
-                            <mat-error>Seleccione un producto de la lista</mat-error>
-                        }
-                    </mat-form-field>
-                    <mat-form-field>
-                        <mat-label>Cantidad</mat-label>
-                        <input matInput type="number" formControlName="cantidad"> 
-                    </mat-form-field>
-                    <mat-form-field>
-                        <mat-label>Precio Unitario Compra</mat-label>
-                        <input matInput type="number" formControlName="precioUnitarioCompra"> 
-                    </mat-form-field>
-                    <mat-form-field>
-                        <mat-label>observaciones</mat-label>
-                        <input matInput formControlName="cantidad"> 
-                    </mat-form-field>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="w-full">
+                            <mat-label>Cantidad</mat-label>
+                            <input matInput type="number" formControlName="cantidad">
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="w-full">
+                            <mat-label>Precio unitario de compra</mat-label>
+                            <input matInput type="number" formControlName="precioUnitarioCompra">
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="w-full sm:col-span-2 lg:col-span-4">
+                            <mat-label>Observaciones</mat-label>
+                            <input matInput formControlName="observaciones">
+                        </mat-form-field>
+                    </div>
                 </div>
             }
         </div>
     </section>
-    <div>
-        <button mat-flat-button type="submit" [disabled]="isSubmitting">
-            <mat-icon>check</mat-icon> Registrar compra
+    <div class="flex justify-end">
+        <button mat-flat-button type="submit" [disabled]="isSubmitting" class="min-h-11 px-5">
+            <mat-icon>check</mat-icon>
+            Registrar compra
         </button>
     </div>
 </form>

@@ -30,10 +30,14 @@
             <mat-label>Categoria</mat-label>
             <input matInput formControlName="nombreCategoria"/>
         </mat-form-field>
-        <div class="flex flex-start">
+        <div class="flex justify-between">
             <button mat-button type="button" (click)="clearFilters()">
                 <mat-icon>filter</mat-icon>
                 Limpiar filtros
+            </button>
+            <button mat-flat-button type="button" (click)="addStock()" [disabled]="almacenId === null">
+                <mat-icon>add</mat-icon>
+                Añadir Stock
             </button>
         </div>
     </form>

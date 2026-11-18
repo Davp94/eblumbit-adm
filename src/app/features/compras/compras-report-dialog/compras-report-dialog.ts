@@ -6,7 +6,6 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 @Component({
   imports: [MatButtonModule, MatDialogModule],
   selector: 'app-compras-report-dialog',
-  styleUrl: './compras-report-dialog.css',
   templateUrl: './compras-report-dialog.html',
 })
 export class ComprasReportDialog implements OnDestroy {

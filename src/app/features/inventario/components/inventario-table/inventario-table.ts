@@ -15,6 +15,7 @@ import { ProductoResponse } from '../../../../core/models/inventario/ProductoRes
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ProductoPageRequest } from '../../../../core/models/inventario/ProductoPageRequest';
 import { MatIconModule } from '@angular/material/icon';
+import { Router } from '@angular/router';
 
 @Component({
   imports: [
@@ -39,6 +40,7 @@ export class InventarioTable implements OnInit, OnChanges{
   private inventarioService = inject(InventarioService);
   private snackBar = inject(MatSnackBar);
   private destroyRef = inject(DestroyRef);
+  private router = inject(Router);
   private reload = new Subject<void>();
 
   productos = signal<ProductoResponse[]>([]);
@@ -136,6 +138,13 @@ export class InventarioTable implements OnInit, OnChanges{
       marca: '',
       nombreCategoria: ''
     });
+  }
+
+  addStock(): void {
+    if(this.almacenId === null){
+      return;
+    }
+    this.router.navigate(['/compras-form', this.almacenId])
   }
 
   private createRequest(): ProductoPageRequest {

@@ -36,6 +36,16 @@ export const routes: Routes = [
                     import('./features/inventario/inventario').then(m => m.Inventario),
             },
             {
+                path: 'compras-form/:almacenId',
+                loadComponent: () =>
+                    import('./features/compras/compras-form-page/compras-form-page').then(m => m.ComprasFormPage),
+            },
+            {
+                path: 'compras',
+                loadComponent: () =>
+                    import('./features/compras/compras').then(m => m.Compras),
+            },
+            {
                 path: 'almacenes',
                 loadComponent: () =>
                     import('./features/almacenes/almacenes').then(m => m.Almacenes),

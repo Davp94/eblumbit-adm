@@ -1,8 +1,12 @@
-<h2>Reporte de compra #{{data.compraId}}</h2>
-<mat-dialog-content>
-    <iframe [src]="reportUrl" title="Reporte PDF de la compra"></iframe>
+<h2 class="px-6 pt-5 text-xl font-semibold text-slate-900">Reporte de compra #{{data.compraId}}</h2>
+<mat-dialog-content class="w-full px-6">
+    <iframe
+        [src]="reportUrl"
+        title="Reporte PDF de la compra"
+        class="h-[60vh] min-h-64 w-full rounded-lg border border-slate-200 bg-slate-50"
+    ></iframe>
 </mat-dialog-content>
-<mat-dialog-actions>
+<mat-dialog-actions class="flex flex-wrap justify-end gap-2 border-t border-slate-100 px-6 py-4">
     <a mat-flat-button [href]="reportObjectUrl" [download]="fileName">
         Descargar Reporte
     </a>
